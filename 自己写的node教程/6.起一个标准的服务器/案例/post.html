@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+用户名<input name="username" type="text"><br>
+年龄<input name="age" type="text">
+<input onclick="sub()" name="age" type="button" value="注册">
+</body>
+</html>
+<script type="text/javascript">
+    function sub(){
+
+        var username =document.querySelector('input[name="username"]').value;
+        var age =document.querySelector('input[name="age"]').value;
+        var user={
+            username:username,
+            age:age,
+        }
+
+            //创建ajax对象
+            var xhr = new XMLHttpRequest();
+            //指定参数
+            xhr.open('POST','/post',true);
+            //注册状态后回调函数
+            xhr.onreadystatechange= function () {
+                //当前状态和响应完毕
+                if(xhr.readyState=4 && xhr.status==200){
+                    document.querySelector('#clock').innerHTML=''
+                }else {
+                    document.querySelector('#clock').innerHTML=''
+                }
+            }
+            xhr.send(JSON.stringify(user))
+
+    };
+
+    function tupain(){
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST','/reg2',true)
+        //设置响应类型
+        xhr.responseText='text',
+        xhr.onreadystatechange=function(){
+            if(xhr.readyState==4&&/2\d{2}/.test(xhr.status)){
+                console.log(xhr.responseText);
+                var img = document.createElement('img') ; //创建一个img标签
+                img.src = xhr.responseText;
+                document.body.appendChecked(img)
+            }
+        }
+    }
+
+</script>

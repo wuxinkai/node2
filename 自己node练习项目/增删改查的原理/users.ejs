@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <ul>
+      <%
+        for (var i=0; i<users.length;i++){
+          %>
+        <!--  =等号代表取值 -->
+            <li><%=users[i].name%></li>
+        <%
+        }
+      %>
+    </ul>
+</body>
+</html>

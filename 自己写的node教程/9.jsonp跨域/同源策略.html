@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script type="text/javascript">
+    function show(data){
+        console.log(data)
+    }
+
+    // 创建 一个csript元素
+    var script = document.createElement('script');
+    //路径
+    script.src = 'http://localhost:8080/books?callback=show';  //属于跨域，和我打开的短口不一样
+    //插入到页面中
+    document.body.appendChild(script)
+</script>
+
+</body>
+</html>

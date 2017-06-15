@@ -1,0 +1,73 @@
+ // 设置编码 为了不乱码
+ res.setHeader('Content-Type','text/html;charset=utf-8');
+
+
+
+
+
+ //数据库
+ mongo  链接数据库
+ show dbs 查看所有数据库
+ db.getName() 查看当前使用数据库
+ use person 切换数据库
+ db.dropDatabase()
+ db.person.insert({name:'wu',age:28})  创建一个集合  向person这个集合插入内容
+ db.person.find() 查询
+ show collections  查看有多少集合
+ db.createCollection(collection_Name) 创建集合 中括号里是集合的名字
+ exit  退出服务器连接
+ help 查看api
+
+
+ 安装mongoose
+     npm install mongoose
+ 启动一个数据库
+     var mongoose = require("mongoose");
+     var db = mongoose.connect("mongodb://123.57.143.189:27017/zfpx");
+     db.connection.on("error", function (error) {
+         console.log("数据库连接失败：" + error);
+     });
+     db.connection.on("open", function () {
+         console.log("数据库连接成功");
+     });
+
+
+
+var favicon = require('serve-favicon'); //处理收藏夹图标的
+app.use(favicon(path.jion(__dirname,'public','favicon.ico'))); //需要把图标收藏夹文件放在punlic下
+
+var logger = require('morgan'); //写日志 的
+app.use('dev') //使用日志中间件
+
+var bodyParser = require('body-parser'); //解析请求体
+app.use(bodyParser.json()) //解析JSON类型的请求体 通过请求中的Content-Type解析
+app.use(bodyParser.urlencoded({extended:false})); // 查询字符串格式 name=wu
+
+//读写cookie插件 req.cookie设置用的  req.cookies请求中的cookie封装成对象
+var cookieparser = require('cookie-parser');
+app.use(cookieparser()); // 通过中间件 多了一个 cookies 属性
+
+//模块的导入和路由的配置
+index.js 页面
+var express = require('express')
+var router =express.Router()   //路由的实例
+router.get('/',function(req,res,next){  //当用户访问 /的时候进行回调
+    res.render('index',{title:'Express'})
+});
+server.js 页面
+module.exports =router;
+var users=require('./router')
+app.use('/',users)
+
+//捕获404的错误转换错误处理中间件里去
+app.use(function(req,res,next){
+    var err = new Error('Not Found');
+    err.status =404
+    next(err)
+})
+
+
+
+
+
+

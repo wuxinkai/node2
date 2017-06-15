@@ -1,0 +1,62 @@
+npm init  记录依赖 初始化记录的依赖的文件 package.json
+本地安装
+开发依赖(开发的时候使用，上线后不需要)
+    npm install gulp --save-dev
+发布依赖(开发时候用上线时仍需要)
+     npm install jquery --save
+通过package.json来安装所需的依赖
+    npm install
+默认安装到当前目录下的node_modules文件夹下
+全局安装(不是所有文件都能全局安装的,默认安装到c盘下) 安装后可以在命令行下使用
+     npm install gulp -g
+全局卸载
+    npm uninstall gulp -g
+查看全局的安装路径
+    npm root -g
+
+可以在git上和webstrom都可以安装第三方模块
+
+源的切换
+安装nrm工具，想在命令行下切换源
+    npm install -g nrm
+显示所有源
+    nrm ls
+添加源
+    nrm add zhufeng http://172.18.0.199
+切换源
+    nrm use zhufeng
+
+发布一个包到npm网站
+包里必须要有package.json文件
+
+写个文件夹
+ mkdir testmypublish
+进入文件夹
+cd testmypublish
+初始化一个项目
+npm init -y
+会生成一个package.json
+写一个包的入口文件
+发布到npm网站上 添加用户 如果有表示登陆
+npm adduser
+输入用户名：
+输入密码：
+输入邮箱
+发布包（第三方包）
+npm publish
+下载第三方包
+npm install 包名 --save
+取消发布
+npm unpublish --force
+
+
+
+
+
+
+
+
+
+
+
+

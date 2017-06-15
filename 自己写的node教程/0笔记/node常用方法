@@ -1,0 +1,170 @@
+http模块帮助我们实现http服务器和客户端的功能
+curl -v http://localhost:8080获取服务器资源linux命令
+
+http服务器 创建服务器并指定监听 请求处理函数
+http.createServer(requestListener(request,response))
+
+request 是可读流
+
+response可写流
+
+
+server.listen(post,[host],[backlog],[callback])
+
+method 客户端请求方法
+url 请求时使用的url参数字符串
+headers请求头 包括客户端的所有头信息 包括cookie
+
+常用请求头信息
+从客户端发往服务器报文所使用的字段，用于补充请求的附加信息
+
+host请求的服务器主机 http/1.1请求必须包含主机头 否则返回400
+connection客户端和服务器连接选项
+accetp 告诉服务器客户端能够处理的内容类型和优先级 q=表示权重 用分号隔开 不指定权重默认是1
+user-agent用户代理 是指浏览器他的信息包括硬件平台 系统软件 应用软件和用户个人偏好
+accept-encoding 告诉服务器客户端支持的内容编码，级内容编码优先级顺序
+
+把原生的url转成对象
+var urlObj =url.parse('原始的url')
+urlobj的属性
+href被转换为原型的url字符串
+protocal客户端请求的协议
+slashes在协议与路径中间是否使用//分隔符
+host URL字符串中完整的地址及端口  可能为IP也可能为主机名
+auth  认证部分
+hostname 主机名域Ip
+pathname 路径 不包含查询字符串
+query 不包含起始字符？的查询字符串 或根据该查询字符串转换而成的对象（由parse方法的第二个参数决定的 true就是转成对象
+
+查询字符串
+querystring用来查询字符串进行转换
+var queryObj = querystring.parse(str,[sep],[eq],[options]) //字符串转化为对象
+var queryStr = querystring.stringify(obj,[sep],[eq]) //对象转化成字符串
+str需要转换的查询字符串
+sep查询字符串中的分割符号 默认为&
+eq 查询字符串中的分配字符 默认参数值为=
+options为对象参数 可指定maxKeys属性 指写转换后的属性个数 0为不限定
+
+
+response http.serverResponse 代表服务器对象
+response.writeHead(statusCode,[reasonPhrase],[headers])
+
+statusCode 状态码
+reasonPhrase 状态码描述信息
+headers 响应头对象
+     content-type内容类型
+     location重定向到url地址
+     content-length响应内容字符数
+     set-cookit写入客户端cookie
+     content-encoding响应内容编码方式
+     cache-control缓存
+     Expires指定过期时间
+     Etag服务器响应内容没有变化 时不会重新下载数据
+     connection默认是keep-alive保存链接 想断开用close
+
+设置响应头
+setHeader方法可以单独设置响应头
+response.setHeader(name,value)
+如果多个响应头的话可以使用数组
+response.setHeader('set-cookie',['name=zfpx','age=6'])
+
+其他响应设置
+getHdader 获取响应体
+removeHeader 移出响应头
+headerSent响应头是否已经发出
+sendData是否发送响应时间
+statusCode设置响应码
+
+
+
+
+（上面是服务器端）
+创建http客户端
+request方法可以向其他网站请求数据
+options
+    host域名或者目标主机Ip
+    hostname域名或者目标主机IP 优先级比host高
+    post端口号
+    mothod请求方法
+    path请求路径默认是/
+    headers客户端请求头对象
+    auth认证信息 如username：password
+    callcack=function(response){}当获取到目标网站所返回的响应流时调用的回调函数
+    response是一个http.IncomingMessage对象可以从中读取响应流数据
+
+写入请求并发送请求
+    request.write(chunk,[encoding]);
+    chunk要发送的数据 可以是buffer或者字符串
+    encding编码 不指定默认是utf8
+end方法用来结束本次请求
+    request.end(chunk,[encoding])
+
+
+    req是一个可写流 ondata on  end pipe
+    res是一个可读可写流 ondata onend pipe write end
+
+
+跨域资源共享
+    jsonp的缺点  必须是get请求 不能传递请求体  不能发送数据  也不安全
+
+    在标准浏览器下使用XMLHttpRequest对象
+    浏览器使用跨域资源共享的时候必须在浏览器设置access-Control-Allow-Origin
+    req.writeHeader(200,{'access-Control-Allow-Origin':"*"})
+    *代表 允许任何服务器访问，也可以改成固定的原
+     req.writeHeader(200,{'access-Control-Allow-Origin':"http://localhost:65535"})
+
+安装express属性
+    安装打来webstrom安装按钮  npm i express
+   什么是路由：  根据请求路径来处理客户端发起的get请求
+
+中间件
+    中间件就是处理HTTp请求的函数  用来完成各种任务的特定任务，比如检测用户是否登录  添加公共方法
+    它最大的特点就是 一个中间件处理完 可以把响应数据传递给下一个中间件
+    如何调回回调函数的next参数表示将请求数据传递给下一个中间件
+获取请求参数
+    req.host返回请求头里取的主机名（不包含端口号）
+    req.path返回请求url的路径名
+    req.params是一个由路径参数组成的对象
+
+send方法
+    send方法向浏览器发送响应，并且可以智能处理不同类型的数据 并自动的输出响应时会自动进行一些数据 比如header信息 http缓存支持等待
+    当参数是一个string时 Content-type 默认设置 为text/html
+    当参数是array或者object Express会返回一个JSON
+    不能使用数组为参数 如果要返回状态码res.sendStatus方法
+
+指定渲染模板
+    app.set('view engine',''ejs')
+
+RESTful API设计
+    结果
+    GET/collection     返回资源对象列表（数组）
+    GET/collection/:id  返回单个资源对象
+    POST/collection     返回新生产的资源对象
+    PUT/collection/:id   返回完整的资源对象
+    PATCH/collection/:id  返回完整的资源对象
+    DELETE/collection/:id  返回一个空对象
+
+map 替换所以元素
+filter 过滤数组中的元素
+reduce 聚合
+reduceRight 从左往右聚合
+some 有一个满足就可以
+every 全部满足条件
+indexof 第一个索引
+lastIndexOf 最后一个索引
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

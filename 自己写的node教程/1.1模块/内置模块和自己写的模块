@@ -1,0 +1,14 @@
+module.exports = calc; 是我们写的模块的接口 ，给node服务器引用的
+
+var calc = require('./calc');
+//在node端的引用，引用的是文件类型，所以使用相对路径
+//一个文件多次引用，只会执行一次，会将文件进行缓存
+// 默认+js后缀找，找不到+json
+//require最终拿到的就是module.exports
+
+
+2在缓存对象中通过绝对路径取出对应的模块进行删除（这样方法就会被多次调用）
+缓存根据绝对路径进行的缓存，因为不同的文件夹里包含着相同的文件名
+delete require.cache[require.resolve('./cache.js')];
+//获取缓存
+console.log(require.cache);

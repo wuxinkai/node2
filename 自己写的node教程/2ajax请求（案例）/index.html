@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<!-- enctype="application/x-www-form-urlencoded"序列化字符串-->
+<form name="userform" enctype="application/x-www-form-urlencoded">
+  用户名  <input type="text" name="username"><br><br>
+   密码  <input type="text" name="password"><br><br>
+     <input id="regBtn" type="button" value="提交"/>
+</form>
+</body>
+</html>
+<script type="text/javascript">
+    //发送的是表单
+    function serialize(form){
+        var elements=Array.prototype.slice.call(form.elements);  //转换成数组
+        var data=[];
+        elements.forEach(function(element){
+            //先取出元素的类型
+            var type = element.type;
+            switch (type){
+                case 'submit':
+                case 'cancel':
+                case 'reset':
+                    break;
+                case 'text':
+                    data.push(element.name+'='+element.value )
+            }
+        });
+        return data.join('&')
+    }
+
+    //发送的是json
+    function toJson(form){
+        var elements=Array.prototype.slice.call(form.elements);  //转换成数组
+        var data={};
+        elements.forEach(function(element){
+            //先取出元素的类型
+            var type = element.type;
+            switch (type){
+                case 'submit':
+                case 'cancel':
+                case 'reset':
+                    break;
+                case 'text':
+                    data [element.name]=element.value;
+            }
+        });
+        return data
+
+    }
+
+    window.onload=function(){
+        document.querySelector('#regBtn').addEventListener('click',function(){
+            var xhr = new XMLHttpRequest();
+            //发出请求
+            xhr.open("POST",'./reg',true) ; //请求方式  路径    是否异步
+            xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
+            xhr.responseType="text"; //将字符串转为对象
+            //注册回调函数
+            xhr.onreadystatechange=function(){
+                if(xhr.readyState==4&&/2\d{2}/.test(xhr.status)){
+                    console.log(xhr.responseText)
+                }
+            }
+            //把表单的值转成查询字符串
+//            var data =serialize(document.querySelector('form'));  //发送的是表单
+            var data =toJson(document.querySelector('form')); //发送json
+            //把数据放在请求头里发送给服务器
+             console.log(data)
+//            xhr.send(data)  //发送的是表单
+
+            xhr.send(JSON.stringify(data))
+        })
+    }
+
+</script>

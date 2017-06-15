@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html>
+<script type="text/javascript">
+    //从后台获取到内容直接让show这个函数执行
+    function show(data) {
+        document.body.innerHTML = data.name + '<br/>'+data.age
+
+    }
+    //（1）创建一个script标签
+    var oScript = document.createElement('script');
+
+    oScript.src ='http://localhost:8080/books?dd=show'; //show(['node.js','java'])
+    document.body.appendChild(oScript);
+
+</script>

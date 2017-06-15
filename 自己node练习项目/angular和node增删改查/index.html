@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="zfMod">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+
+</head>
+<body>
+<div ng-controller="zfCtrl as vm" class="container">
+    <table class="table table-bordered" >
+        <caption>基本的表格布局</caption>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>属名</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{vm.book.id}}</td>
+            <td>{{vm.book.name}}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <table class="table table-bordered">
+        <caption>基本的表格布局2</caption>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>属名</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="book in vm.books">
+            <td>{{book.id}}</td>
+            <td>{{book.name}}</td>
+            <td>
+                <button class="btn btn-warning"ng-click="vm.edit(book)">修改</button>
+                <button class="btn btn-default" ng-click="vm.delete(book)">删除</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+<!--增加和修改-->
+    <table class="table table-bordered">
+        <caption>基本的表格布局</caption>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>属名</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><input type="text" ng-model="vm.book.name" class="form-control"></td>
+            <td> <button class="btn btn-primary" ng-click="vm.add()">保存</button></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+<script src="//cdn.bootcss.com/angular.js/1.4.3/angular.js"></script>
+<!--引入这个resource模块-->
+<script src="//cdn.bootcss.com/angular-resource/1.4.13/angular-resource.min.js"></script>
+<!--<script src="//cdn.bootcss.com/angular-resource/1.3.0/angular-resource.min.js"></script>-->
+<script>
+    //模块的名字 依赖的其它模块
+   var app = angular.module('zfMod', ['ngResource']);
+//    封装一个服务 $resource angular 提供的方法
+    app.factory('bookServervice',function($resource){
+        //     路径  路径参数   自定义方法
+        return $resource('/books/:id',{id:'@id'},{  //
+            update:{method:'PUT'} //自定义方法 在server.js的 45行
+        })
+    })
+
+    app.controller('zfCtrl', function (bookServervice){ //自己写的服务
+
+//        var defer =$q.defer();
+//         defer.resolve(); //成功解决
+//         defer.reject(); //失败拒绝
+//        return defer.promise.then;
+        var vm = this;
+        vm.book ={};
+        vm.books =[];
+//启动的时候查出所有的内容
+        bookServervice.query().$promise.then(function(books){
+            vm.books =books
+        })
+//添加内容
+        vm.add = function(){
+            // 添加数据          接收服务器端过来的数据
+    //修改内容 区分修改还是新增   有id就是修改没有id就是新增
+            var id = vm.book.id;
+            if(id){
+                bookServervice.update(vm.book).$promise.then(function(book){
+                    vm.book ={};
+                    vm.books.map(function(item){
+                        if(item.id == id){
+                             return book;  //如果修改就返回新的book
+                        }else {
+                            return item;   //没有修改就返回 老的
+                        }
+                    })
+                })
+            }else {
+                bookServervice.save(vm.book).$promise.then(function(book){
+                    vm.books.push(book)
+                })
+            }
+         };
+//修改内容
+        vm.edit = function(book){
+            vm.book =book; //将内容给input
+        };
+// 删除内容
+        vm.delete = function(book){
+            //向后台发送  http://localhost:8080/books/1?name=node.js
+            bookServervice.delete(book).$promise.then(function(book){
+                var index = vm.books.indexOf(book);
+               vm.books.splice(index,1)
+            })
+
+        }
+    })
+
+
+
+
+</script>
+</html>

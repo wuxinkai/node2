@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<!--        只能用post提交   -->
+<!-- application/x-www-form-urlencoded 序列化表单 查询字符串都用这个-->
+<!-- multipart/form-data 上传图片用这个 可以接收文件-->
+<form name="userform" method="post" enctype="multipart/form-data">
+  用户名  <input type="text" name="username"><br><br>
+   密码  <input type="text" name="password"><br><br>
+    <!--头像  <input type="file" multiple name="avatar"><br><br>  multiple是多选的意思-->
+    头像  <input type="file"  name="avatar"><br><br>
+      <input id="regBtn" type="button" value="提交"/>
+</form>
+</body>
+</html>
+<script type="text/javascript">
+    //发送的是json
+    function toJson(form){
+        var elements=Array.prototype.slice.call(form.elements);  //转换成数组
+        var data={};
+        elements.forEach(function(element){
+            //先取出元素的类型
+            var type = element.type;
+            switch (type){
+                case 'submit':
+                case 'cancel':
+                case 'reset':
+                    break;
+                case 'text':
+                    data [element.name]=element.value;
+            }
+        });
+        return data
+
+    }
+
+    window.onload=function(){
+        //（1）注册监听
+        document.querySelector('#regBtn').addEventListener('click',function(){
+            var xhr = new XMLHttpRequest();
+            //发出请求
+            xhr.open("POST",'./reg2',true) ; //请求方式  路径    是否异步
+            //(3)设置响应类型
+            xhr.responseType="text"; //将字符串转为对象
+            //注册回调函数
+            xhr.onreadystatechange=function(){
+                if(xhr.readyState==4&&/2\d{2}/.test(xhr.status)){
+                    console.log(xhr.responseText)
+                }
+            };
+            //（4）准备发射服务器的数据
+            var formData = new FormData(); //h5新增上传图片
+            //对象的表单元素 都是普通元素
+            formData.append('username',document.querySelector('input[name=username]').value);
+            //对象的表单元素 都是普通元素
+            formData.append('password',document.querySelector('input[name=password]').value);
+            // 这是文件元素
+            var avatar =document.querySelector('input[name=avatar]');
+            formData.append('avatar',avatar.files[0]);//files[0] 表示第一个元素，这个是可以多选的
+            xhr.send(formData);//发送的请求头内容，
+            return false
+        })
+    }
+/*
+我们想提交一个表单
+我们做一个提交表单，表单有普通的 input元素  普通文本  还有文件 因为里面包含文件， 就不能用json 也不能用查询字符串， 就必须的用FromData 形式提交
+
+
+
+*/
+</script>
+
