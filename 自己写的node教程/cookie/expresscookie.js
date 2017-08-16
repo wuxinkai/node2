@@ -26,14 +26,14 @@ app.get('/',function(req,res){
 //登录
 app.get('/login',function(req,res){
     var username = req.query.username;
-    res.cookie('username',username)
+    res.cookie('username',username);//将得到内容写入前端
     //重定向,让客户端从新请求参数指定的路径
     res.redirect('/user') //
 })
 //登录用户主页
 app.get('/user',checklogin,function(req,res){ //checklogin可以加参数 
     var username = req.query.username;
-
-    res.send(req.cookies.username);
+    console.log(req.cookies.username);
+    res.send(req.cookies.username); //获取内容返回给前端
 })
 app.listen(9090);

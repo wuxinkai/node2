@@ -63,13 +63,13 @@ personModel.create(xxx,function(err,doc){
 
 //3更新 改数据库的内容
 //更新的时候  如果匹配的多余一条  只会更新一条
-//personModel.update({age:1,name:'zfpx1'},{multi:true},{ //{multi:true} 匹配到多条就修改多少条
-//    age:25,name:'wuxinkai'
-//},function(err,result){
-//    //console.log(result);
-//    //{ ok: 1, nModified: 1, n: 1 }
-//    //ok: 1 成功  nModified被修改的条数     n 准备要修改的条数
-//});
+personModel.update({age:1,name:'zfpx1'},{multi:true},{ //{multi:true} 匹配到多条就修改多少条
+   age:25,name:'wuxinkai'
+},function(err,result){
+   //console.log(result);
+   //{ ok: 1, nModified: 1, n: 1 }
+   //ok: 1 成功  nModified被修改的条数     n 准备要修改的条数
+});
 
 
 //4查询
@@ -77,9 +77,9 @@ personModel.create(xxx,function(err,doc){
 //use 2016node
 
 //查所有
-//personModel.find({},function(err,docs){
-//    console.log(docs)
-//})
+personModel.find({},function(err,docs){
+   console.log(docs);
+})
 //
 //// name = zfpx4或age =5
 //personModel.find({$or:[{name:'zfpx'},{age:5}]},function(err,docs){
@@ -91,13 +91,13 @@ personModel.create(xxx,function(err,doc){
 //
 //});
 //找一条后返回 不再继续查找
-//personModel.findOne({_id:'584b81f5e4e15260dce4d8d6'},function(err,docs){
-//
-//});
+personModel.findOne({_id:'584b81f5e4e15260dce4d8d6'},function(err,docs){
+
+});
 ////
-//personModel.findById('584b81f5e4e15260dce4d8d6',function(err,docs){
+// personModel.findById('584b81f5e4e15260dce4d8d6',function(err,docs){
 //
-//});
+// });
 
 //查询
 //personModel.update({age:1},{
@@ -112,10 +112,10 @@ var pageSize =3;
 //要取第几页的数据
 var pageNum = 3;
 //skip 跳过指定的条数
-//limit
-//personModel.find().skip(pageSize*(pageNum-1)).limit(pageSize).exec(function(err,docs){
-//    console.log(docs)
-//})
+//limit 限制多少条
+personModel.find().skip(pageSize*(pageNum-1)).limit(pageSize).exec(function(err,docs){
+   console.log(docs)
+})
 
 //排序sort
 personModel.find().skip(pageSize*(pageNum-1)).limit(pageSize).sort({
