@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var app = express();
 app.use(cookieParser());
+
 app.use(session({
     secret:'zfpx',
     resave:true,
@@ -26,6 +27,7 @@ app.get('/signup',function(req,res){
 // 处理注册表单的post提交
 app.post('/signup',function(req,res){
     var user = req.body;
+
     var oldUser = users.find(function(item){
         return item.username == user.username;
     })

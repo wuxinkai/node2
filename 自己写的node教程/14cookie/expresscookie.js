@@ -12,27 +12,26 @@ app.use(cookieParse());
 //中间件
     function checklogin(req,res,next){
         if(req.cookies &&req.cookies.username){ //cookie有值  cookies的username也有值
-            next()
+            next();
         }else {
-            res.redirect('/') //
+            res.redirect('/'); // 从定向
         }
 
     }
 
 //登录
 app.get('/',function(req,res){
-    res.render('login',{})
+    res.render('login',{});
 })
 //登录
 app.get('/login',function(req,res){
     var username = req.query.username;
-    res.cookie('username',username)
+    res.cookie('username',username);
     //重定向,让客户端从新请求参数指定的路径
-    res.redirect('/user') //
-})
+    res.redirect('/user'); //
+});
 //登录用户主页
-app.get('/user',checklogin,function(req,res){ //checklogin可以加参数 
-    var username = req.query.username;
+app.get('/user',checklogin,function(req,res){ //checklogin可以加参数
 
     res.send(req.cookies.username);
 })

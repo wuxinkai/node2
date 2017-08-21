@@ -1,5 +1,5 @@
-var http = require('http')
-var cookieParser = require('cookie-parser')
+var http = require('http');
+var cookieParser = require('cookie-parser');
 
 http.createServer(function(req,res){
     if(req.url=='/write'){
@@ -12,12 +12,12 @@ http.createServer(function(req,res){
         res.writeHead(200,{
             'Set-Cookie':'name=zfpx; path=/; Expires='+time //time 过期时间
         });
-        res.end('ok ')
+        res.end('ok ');
     }else if(req.url=='/read'){
-        console.log(req.headers)
-        res.end(req.headers.cookie)
+        console.log(req.headers);
+        res.end(req.headers.cookie);
     }else if(req.url=='/'){
-       // 如果 请求中 cookie 存在visited 则输出cookie
+       // 如果 请求中 14cookie 存在visited 则输出cookie
        // 否则设置cookie 字段visited 并且输出时间为10分钟
        if(req.cookies.visited){ //有值才走这一行
 
@@ -35,7 +35,7 @@ http.createServer(function(req,res){
 //app.get('/user',function(req,res){
 //    res.send(req.cookies.username)
 //})
-}).listen(8080)
+}).listen(8080);
 
 
 

@@ -13,6 +13,7 @@ app.set('view engine','ejs');
 //path.resolve 选获取绝对路径  然后拼拼上后的参数
 app.set('views',path.resolve('views'));
 
+app.use(express.static(path.resolve('public')));
 
 app.get('/',function(req,res){
     //渲染模板  渲染路径   数据源
@@ -20,6 +21,9 @@ app.get('/',function(req,res){
         name:'wuxinkai'
     }})
 });
+
+
+
 
 app.get('/reg',function(req,res){
     res.render('index',{title:'注册',books:{

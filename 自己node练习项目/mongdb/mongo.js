@@ -1,7 +1,7 @@
 //加载mongose模块
 var  mongoose= require('mongoose'); //第三方模块
 //链接数据库      协议       域名      数据库名字
-mongoose.connect('mongodb://127.0.0.1/2016node'); //:27017端口号可以不写    //2016node数据库的名字有就添加  没有就创建
+mongoose.connect('mongodb://127.0.0.1/2017node'); //:27017端口号可以不写    //2016node数据库的名字有就添加  没有就创建
 
 //先创建集合骨架模型 规定一个集合的文档的字段名称和类型
 //规定存储的时候字段的名称
@@ -77,14 +77,21 @@ personModel.create(xxx,function(err,doc){
 //use 2016node
 
 //查所有
-//personModel.find({},function(err,docs){
-//    console.log(docs)
-//})
-//
+
+personModel.find({},function(err,docs){
+    if(docs !=undefined){
+        for(i=0;i<docs.length;i++){
+            var cur = docs[i];
+
+            console.log(cur)
+        }
+    }
+})
+
 //// name = zfpx4或age =5
-//personModel.find({$or:[{name:'zfpx'},{age:5}]},function(err,docs){
+// personModel.find({$or:[{name:'zfpx'},{age:5}]},function(err,docs){
 //    console.log(docs)
-//});
+// });
 //属性过滤 只返回需要的字段
 //第二个参数 可以包含的字段 或排除的字段 name便是字段名， 1要返回
 //personModel.find({},{name:1},function(err,docs){
@@ -118,11 +125,11 @@ var pageNum = 3;
 //})
 
 //排序sort
-personModel.find().skip(pageSize*(pageNum-1)).limit(pageSize).sort({
-    age:-1 // 倒叙排列
-}).exec(function(err,docs){
-    console.log(docs)
-})
+// personModel.find().skip(pageSize*(pageNum-1)).limit(pageSize).sort({
+//     age:-1 // 倒叙排列
+// }).exec(function(err,docs){
+//     console.log(docs)
+// })
 
 
 
