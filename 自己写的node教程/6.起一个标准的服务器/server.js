@@ -1,10 +1,13 @@
 var http =require('http');
 var fs =require('fs');
 var url = require('url');
+//request 客户端的请求
+// response 发送给客户端的内容
 var server = http.createServer(function(request,response){
     var now = new Date();
     //（1）响应  内容类型 设置响应头
-    response.setHeader('C ontent-Type','text/html;charset=utf8');
+    response.setHeader('Content-Type','text/html;charset=utf8');
+
     //响应状态码
     response.statusCode=404;
     // 设置响应体
@@ -17,4 +20,4 @@ var server = http.createServer(function(request,response){
     console.log(request.url); //请求的url
     console.log(request.headers); //请求头
 })
-server.listen(12345,'localhost');
+server.listen(8080,'localhost');

@@ -10,3 +10,4 @@ console.log(person2.age2);
 //第三方模块 必须下载
 // npm install querystring --save
 var querystring = require('querystring');
+

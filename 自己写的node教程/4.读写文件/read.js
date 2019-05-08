@@ -12,3 +12,26 @@ function copy(src, target) {
     })
 }
 copy("./b.js", "./a.js");
+
+
+
+
+
+
+
+// let person = {}
+// function show() { 
+//   if (Object.keys(person).length ==2) { 
+//     console.log(person);
+//   }
+// }
+
+// fs.readFile('./a.js', 'utf8', function (err,data) { 
+//   person.name = data;
+//   show()
+// })
+
+// fs.readFile('./b.js', 'utf8', function (err,data) { 
+//   person.age = data;
+//   show()
+// })
