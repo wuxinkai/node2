@@ -40,7 +40,7 @@
       if (xhr.readyState = 4 && xhr.status == 200) {
         document.querySelector('#box').innerHTML = xhr.responseText
       } else {
-        document.querySelector('#box').innerHTML = ''
+        document.querySelector('#box').innerHTML = xhr.statusText
       }
     }
     //发送数据，

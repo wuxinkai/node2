@@ -83,7 +83,7 @@ copy("./zt.png", "./zt2.png");
 
 # 读写目录
 
-### 1创建目录
+### 1 创建目录
 
 ```
 fs.mkdir('text2',function(err){
@@ -97,7 +97,7 @@ fs.mkdir('text2',function(err){
 执行 A学习盘\node2\自己写的node教程\5.读写目录> node 目录.js
 ```
 
-### 2读取目录下所有的文件
+### 2 读取目录下所有的文件
 
 ```
 fs.readdir('./book',function(err,files){
@@ -105,7 +105,7 @@ fs.readdir('./book',function(err,files){
 })
 ```
 
-### 3读取一个文件或目录详情
+### 3 读取一个文件或目录详情
 
 ```
 fs.readdir('./book',function(err,files){
@@ -122,7 +122,8 @@ fs.readdir('./book',function(err,files){
 })
 ```
 
-### 4判断文件是否存在
+### 4 判断文件是否存在
+
 ```
 fs.exists('./book',function(exists){
     console.log(exists)
@@ -130,6 +131,7 @@ fs.exists('./book',function(exists){
 ```
 
 ### 路径拼接
+
 ```
 //处理路径
 console.log(path.join('./book','mysql.json ')) //合并路径
@@ -148,7 +150,8 @@ console.log(path.extname('node.json')) //获取一个路径里文件扩展名
  console.log(path.resolve('book','node.json'))
 ```
 
-# 写一个http服务
+# 写一个 http 服务
+
 ```
 var http =require('http');
 var fs =require('fs');
@@ -175,4 +178,59 @@ server.listen(8080,'localhost');
 
 启动项目 ：自己写的node教程\6.起一个标准的服务器> node server.js
 ```
+
 ![my-logo.png](./images/2.png "my-logo")
+
+# ajax 发送步骤
+
+* 0 未初始化 对象建立 尚未初始化 尚未调用open方法
+* 1 初始化  对象建立 尚未调用send方法
+* 2 发送数据  send调用 但是当前的状态http头未知
+* 3 数据传送中 已接收部分数据
+* 4 xhr.readyState = 4完成  数据接收完成 responseBody和responseText获取完整的应用数据
+
+```
+  //（1）创建ajax对象
+  var xhr = new XMLHttpRequest();
+
+  //（2）指定参数， 发送地址/clock
+  xhr.open('POST', '/clock', true);
+
+  //（4）注册状态后回调函数
+  xhr.onreadystatechange = function () {
+    //当前状态和响应完毕
+    if (xhr.readyState = 4 && xhr.status == 200) {
+      document.querySelector('#box').innerHTML = xhr.responseText
+    } else {
+      document.querySelector('#box').innerHTML = xhr.statusText
+    }
+  }
+
+  //（3）发送数据，
+  xhr.send(JSON.stringify(user))
+```
+## 接收服务器响应 三部
+*  xhr.status 成功 200
+* statusText 表示http的响应状态码描述符
+* responseText 表示响应体
+
+# 后台接收 前端发过来的数据
+* on接收 data和end
+* 对象和字符串的转化    data.toString(); 和  JSON.parse(str)
+* SON 通常用于与服务端交换数据。在向服务器发送数据时一般是字符串
+```
+else if(url=='/clock'){
+  //返回给前台一个时间
+  var str = '';
+  request.on('data', function (data) { 
+    //转为字符串
+    str += data.toString();
+  })
+  request.on('end', function () { 
+    console.log(str);
+    //转成对象
+    users.push( JSON.parse(str))
+      response.end(JSON.stringify(users))
+    })
+  }
+```

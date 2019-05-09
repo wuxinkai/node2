@@ -1,7 +1,7 @@
 var http = require('http');
 var URL = require('url');
 var fs =require('fs');
-
+var users=[]
 var server = http.createServer(function(request,response){
     //将路径转化成对象
         var urlObj = URL.parse(request.url);
@@ -19,8 +19,18 @@ var server = http.createServer(function(request,response){
         })
     }else if(url=='/clock'){  //通过ajax 发送过来的数据
       //返回给前台一个时间
-      
-      response.end(new Date().toLocaleString())
+      var str = '';
+      request.on('data', function (data) { 
+        //转为字符串
+        str += data.toString();
+      })
+      request.on('end', function () { 
+        console.log(str);
+        //转成对象
+        users.push( JSON.parse(str))
+        response.end(JSON.stringify(users))
+      })
+     
     
   }else if(url=='/style.css'){ //在index.thml 中有个link 所以会发起二次请求
         response.setHeader('Content-Type','text/css;charset=utf8');
@@ -33,5 +43,3 @@ var server = http.createServer(function(request,response){
 
 });
 server.listen(10086,'localhost');
-
-//
