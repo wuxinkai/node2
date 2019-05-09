@@ -176,4 +176,3 @@ server.listen(8080,'localhost');
 启动项目 ：自己写的node教程\6.起一个标准的服务器> node server.js
 ```
 ![my-logo.png](./images/2.png "my-logo")
-

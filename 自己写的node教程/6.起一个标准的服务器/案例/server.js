@@ -14,15 +14,18 @@ var server = http.createServer(function(request,response){
     if(url=='/'){
         response.setHeader('Content-Type','text/html;charset=utf8');
       fs.readFile('./post.html', 'utf8', function (err, data) {
-          
-            response.write(data)
+        response.write(`${data}`)
             response.end()
         })
-    }else if(url=='/style.css'){
+    }else if(url=='/clock'){  //通过ajax 发送过来的数据
+      //返回给前台一个时间
+      
+      response.end(new Date().toLocaleString())
+    
+  }else if(url=='/style.css'){ //在index.thml 中有个link 所以会发起二次请求
         response.setHeader('Content-Type','text/css;charset=utf8');
       fs.readFile('./style.css', 'utf8', function (err, data) {
-       
-            response.write(data);
+        response.write(`${data}`)
             response.end()
         })
     }
