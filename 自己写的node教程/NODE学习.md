@@ -183,11 +183,11 @@ server.listen(8080,'localhost');
 
 # ajax 发送步骤
 
-* 0 未初始化 对象建立 尚未初始化 尚未调用open方法
-* 1 初始化  对象建立 尚未调用send方法
-* 2 发送数据  send调用 但是当前的状态http头未知
-* 3 数据传送中 已接收部分数据
-* 4 xhr.readyState = 4完成  数据接收完成 responseBody和responseText获取完整的应用数据
+- 0 未初始化 对象建立 尚未初始化 尚未调用 open 方法
+- 1 初始化 对象建立 尚未调用 send 方法
+- 2 发送数据 send 调用 但是当前的状态 http 头未知
+- 3 数据传送中 已接收部分数据
+- 4 xhr.readyState = 4 完成 数据接收完成 responseBody 和 responseText 获取完整的应用数据
 
 ```
   //（1）创建ajax对象
@@ -209,28 +209,116 @@ server.listen(8080,'localhost');
   //（3）发送数据，
   xhr.send(JSON.stringify(user))
 ```
+
 ## 接收服务器响应 三部
-*  xhr.status 成功 200
-* statusText 表示http的响应状态码描述符
-* responseText 表示响应体
+
+- xhr.status 成功 200
+- statusText 表示 http 的响应状态码描述符
+- responseText 表示响应体
 
 # 后台接收 前端发过来的数据
-* on接收 data和end
-* 对象和字符串的转化    data.toString(); 和  JSON.parse(str)
-* SON 通常用于与服务端交换数据。在向服务器发送数据时一般是字符串
+
+- on 接收 data 和 end
+- 对象和字符串的转化 data.toString(); 和 JSON.parse(str)
+- SON 通常用于与服务端交换数据。在向服务器发送数据时一般是字符串
+
 ```
 else if(url=='/clock'){
   //返回给前台一个时间
   var str = '';
-  request.on('data', function (data) { 
+  request.on('data', function (data) {
     //转为字符串
     str += data.toString();
   })
-  request.on('end', function () { 
+  request.on('end', function () {
     console.log(str);
     //转成对象
     users.push( JSON.parse(str))
       response.end(JSON.stringify(users))
     })
   }
+```
+
+# 读取 get 请求的本地内容
+```
+ window.onload=function(){
+    document.querySelector('#regBtn').addEventListener('click',function(){
+      var xhr = new XMLHttpRequest();
+      //发出请求
+      xhr.open("GET",'./book.json',true) ; //请求方式  路径    是否异步
+
+      // xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
+      xhr.setRequestHeader('Content-Type','11111')
+
+      // xhr.responseType="text"; //将字符串转为对象
+
+      //注册回调函数
+      xhr.onreadystatechange=function(){
+        if(xhr.readyState==4&&/2\d{2}/.test(xhr.status)){
+          //获取所以的响应头
+          console.log(xhr.getAllResponseHeaders())
+          //获取指定的响应头
+          console.log(xhr.getResponseHeader('Content-Type'))
+          //获取 响应体
+          console.log(xhr.responseText)
+          //获取状态描述
+          console.log(xhr.statusText)
+          document.getElementById("box").innerHTML = xhr.responseText
+        }
+      }
+      xhr.send()
+    })
+}
+
+通过http-server 启动服务，打开 http://127.0.0.1:8080 再点击打开
+```
+
+# 上传 json 数据
+
+```
+  function toJson(form) {
+    var elements = Array.prototype.slice.call(form.elements); //转换成数组
+    var data = {};
+    elements.forEach(function (element) {
+      //先取出元素的类型
+      var type = element.type;
+      switch (type) {
+        case 'submit':
+        case 'cancel':
+        case 'reset':
+          break;
+        case 'text': data[element.name] = element.value;
+          break;
+        case 'password': data[element.name] = element.value;
+        
+      }
+    });
+    return data
+
+  }
+```
+# 上传表单格式
+
+```
+  function serialize(form){
+      var elements=Array.prototype.slice.call(form.elements);  //转换成数组
+      var data=[];
+      elements.forEach(function(element){
+          //先取出元素的类型
+          var type = element.type;
+          switch (type){
+              case 'submit':
+              case 'cancel':
+              case 'reset':
+                  break;
+              case 'text':
+                  data.push(element.name+'='+element.value )
+          }
+      });
+      return data.join('&')
+  }
+```
+# 上传 图片格式
+```
+
 ```

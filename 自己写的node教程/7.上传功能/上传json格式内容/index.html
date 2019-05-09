@@ -1,66 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <title>Title</title>
 
 </head>
+
 <body>
-<!--        只能用post提交   -->
-<!-- application/x-www-form-urlencoded 序列化表单 查询字符串都用这个-->
-<!-- multipart/form-data 上传图片用这个 可以接收文件-->
-<form name="userform" method="post" enctype="">
-  用户名  <input type="text" name="username"><br><br>
-   密码  <input type="text" name="password"><br><br>
-    头像  <input type="file" name="avatatr"><br><br>
-      <input id="regBtn" type="button" value="提交"/>
-</form>
+  <!--        只能用post提交   -->
+  <!-- application/x-www-form-urlencoded 序列化表单 查询字符串都用这个-->
+  <!-- multipart/form-data 上传图片用这个 可以接收文件-->
+  <form name="userform" method="post" enctype="">
+    用户名 <input type="text" name="username"><br><br>
+    密码 <input type="password" name="password"><br><br>
+    <input id="regBtn" type="button" value="提交" />
+  </form>
+  <h1 id="box"></h1>
 </body>
+
 </html>
 <script type="text/javascript">
+  //发送的是json
+  function toJson(form) {
+    var elements = Array.prototype.slice.call(form.elements); //转换成数组
+    var data = {};
+    elements.forEach(function (element) {
+      //先取出元素的类型
+      var type = element.type;
+      switch (type) {
+        case 'submit':
+        case 'cancel':
+        case 'reset':
+          break;
+        case 'text': data[element.name] = element.value;
+          break;
+        case 'password': data[element.name] = element.value;
+        
+      }
+    });
+    return data
 
+  }
 
+  window.onload = function () {
+    document.querySelector('#regBtn').addEventListener('click', function () {
+      var xhr = new XMLHttpRequest();
+      //发出POST请求
+      xhr.open("POST", './reg', true); //请求方式  路径    是否异步
 
-    //发送的是json
-    function toJson(form){
-        var elements=Array.prototype.slice.call(form.elements);  //转换成数组
-        var data={};
-        elements.forEach(function(element){
-            //先取出元素的类型
-            var type = element.type;
-            switch (type){
-                case 'submit':
-                case 'cancel':
-                case 'reset':
-                    break;
-                case 'text':
-                    data [element.name]=element.value;
-            }
-        });
-        return data
+      //发送类型
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.responseType = "text"; //将字符串转为对象
+      //注册回调函数
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && /2\d{2}/.test(xhr.status)) {
+          document.getElementById("box").innerHTML =xhr.responseText
+          console.log(xhr.responseText)
+        }
+      };
 
-    }
-
-    window.onload=function(){
-        document.querySelector('#regBtn').addEventListener('click',function(){
-            var xhr = new XMLHttpRequest();
-            //发出请求
-            xhr.open("POST",'./reg',true) ; //请求方式  路径    是否异步
-
-            //发送类型
-            xhr.setRequestHeader('Content-Type','application/json');
-            xhr.responseType="text"; //将字符串转为对象
-            //注册回调函数
-            xhr.onreadystatechange=function(){
-                if(xhr.readyState==4&&/2\d{2}/.test(xhr.status)){
-                    console.log(xhr.responseText)
-                }
-            };
-
-            var data =toJson(document.querySelector('form'))
-            xhr.send(JSON.stringify(data));//发送的请求头内容，
-            return false
-        })
-    }
-
+      var data = toJson(document.querySelector('form'))
+      console.log(data);
+      xhr.send(JSON.stringify(data)); //发送的请求头内容，
+      return false
+    })
+  }
 </script>
