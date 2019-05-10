@@ -8,7 +8,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceFolder}\\自己写的node教程\\6.起一个标准的服务器\\案例\\server.js"
+      "program": "${workspaceFolder}\\自己写的node教程\\7.上传功能\\上传图片\\form.js"
     }
   ]
 }

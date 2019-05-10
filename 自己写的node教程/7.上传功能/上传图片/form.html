@@ -16,28 +16,11 @@
     头像  <input type="file"  name="avatar"><br><br>
       <input id="regBtn" type="button" value="提交"/>
 </form>
+<h3>图片显示对文件名有要求</h3>  
+<div id="imgGrid"></div>
 </body>
 </html>
 <script type="text/javascript">
-    //发送的是json
-    function toJson(form){
-        var elements=Array.prototype.slice.call(form.elements);  //转换成数组
-        var data={};
-        elements.forEach(function(element){
-            //先取出元素的类型
-            var type = element.type;
-            switch (type){
-                case 'submit':
-                case 'cancel':
-                case 'reset':
-                    break;
-                case 'text':
-                    data [element.name]=element.value;
-            }
-        });
-        return data
-
-    }
 
     window.onload=function(){
         //（1）注册监听
@@ -50,6 +33,10 @@
             //注册回调函数
             xhr.onreadystatechange=function(){
                 if(xhr.readyState==4&&/2\d{2}/.test(xhr.status)){
+                  //
+                  var img = document.createElement('img');
+                  img.src = xhr.responseText;
+                  document.getElementById("imgGrid").appendChild(img)
                     console.log(xhr.responseText)
                 }
             };

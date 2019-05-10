@@ -240,13 +240,14 @@ else if(url=='/clock'){
 ```
 
 # 读取 get 请求的本地内容
+
 ```
  window.onload=function(){
     document.querySelector('#regBtn').addEventListener('click',function(){
       var xhr = new XMLHttpRequest();
       //发出请求
       xhr.open("GET",'./book.json',true) ; //请求方式  路径    是否异步
-
+      //发送的是表单格式
       // xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
       xhr.setRequestHeader('Content-Type','11111')
 
@@ -275,6 +276,8 @@ else if(url=='/clock'){
 
 # 上传 json 数据
 
+- application/json 发送的是 json 类型,
+
 ```
   function toJson(form) {
     var elements = Array.prototype.slice.call(form.elements); //转换成数组
@@ -290,13 +293,60 @@ else if(url=='/clock'){
         case 'text': data[element.name] = element.value;
           break;
         case 'password': data[element.name] = element.value;
-        
+
       }
     });
     return data
-
   }
+
+  window.onload = function () {
+    document.querySelector('#regBtn').addEventListener('click', function () {
+      var xhr = new XMLHttpRequest();
+      //发出POST请求
+      xhr.open("POST", './reg', true); //请求方式  路径    是否异步
+
+      //发送类型
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.responseType = "text"; //将字符串转为对象
+      //注册回调函数
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && /2\d{2}/.test(xhr.status)) {
+          document.getElementById("box").innerHTML =xhr.responseText
+          console.log(xhr.responseText)
+        }
+      };
+
+      var data = toJson(document.querySelector('form'))
+      console.log(data);
+      xhr.send(JSON.stringify(data)); //发送的请求头内容，
+      return false
+    })
+  }
+
 ```
+
+# json 后台接收,
+
+- 表单接收和 json 接收格式
+
+```
+ req.on('end', function (data) {
+     //取出请求头的内容类型
+     var contentType=req.headers['content-type'];
+     //(1)application/x-www-form-urlencoded 序列化表单 查询字符串都用这个
+     if(contentType=='application/x-www-form-urlencoded'){
+         var obj = querystring.parse(result);
+         console.log(obj);
+         //json字符串
+     }else if(contentType=='application/json'){  //(2)json格式
+         var obj = JSON.parse(result);
+         console.log(obj)
+     }
+
+     res.end('ok')
+ })
+```
+
 # 上传表单格式
 
 ```
@@ -317,8 +367,104 @@ else if(url=='/clock'){
       });
       return data.join('&')
   }
-```
-# 上传 图片格式
-```
+
+  window.onload=function(){
+    document.querySelector('#regBtn').addEventListener('click',function(){
+        var xhr = new XMLHttpRequest();
+        //发出请求
+        xhr.open("POST",'./reg',true) ; //请求方式  路径    是否异步
+        xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
+//
+        xhr.responseType="text"; //将字符串转为对象
+        //注册回调函数
+        xhr.onreadystatechange=function(){
+            if(xhr.readyState==4&&/2\d{2}/.test(xhr.status)){
+                console.log(xhr.responseText)
+            }
+        }
+        //把表单的值转成查询字符串
+        var data =serialize(document.querySelector('form'));  //发送的是表单
+        //把数据放在请求头里发送给服务器
+          console.log(data)
+        xhr.send(data)  //发送的是表
+    })
+}
+
+//接收的是表单格式
+  req.on('end', function (data) {
+      //取出请求头的内容类型
+      var contentType=req.headers['content-type'];
+      //(1)application/x-www-form-urlencoded 序列化表单 查询字符串都用这个
+      if(contentType=='application/x-www-form-urlencoded'){
+          var obj = querystring.parse(result);
+          console.log(obj);
+          //json字符串
+      }
+      res.end('ok')
+  })
 
 ```
+
+# 图片格式
+
+- form 标签改成 enctype="multipart/form-data"
+- var formData = new FormData(); //h5 新增上传图片
+- 通过 var formidable= require('formidable'); 接收内容 安装 npm i formidable
+
+## 上传图片的 html 代码
+* （1）读取图片信息
+* （2）把图片返回给浏览器
+* （3）浏览器构建一个img元素 追加到body
+```
+ window.onload=function(){
+        //（1）注册监听
+        document.querySelector('#regBtn').addEventListener('click',function(){
+            var xhr = new XMLHttpRequest();
+            //发出请求
+            xhr.open("POST",'./reg2',true) ; //请求方式  路径    是否异步
+            //(3)设置响应类型
+            xhr.responseType="text"; //将字符串转为对象
+            //注册回调函数
+            xhr.onreadystatechange=function(){
+                if(xhr.readyState==4&&/2\d{2}/.test(xhr.status)){
+                  var img = document.createElement('img');
+                  img.src = xhr.responseText;
+                  document.getElementById("imgGrid").appendChild(img)
+                    console.log(xhr.responseText)
+                }
+            };
+            //（4）准备发射服务器的数据
+            var formData = new FormData(); //h5新增上传图片
+            //对象的表单元素 都是普通元素
+            formData.append('username',document.querySelector('input[name=username]').value);
+            //对象的表单元素 都是普通元素
+            formData.append('password',document.querySelector('input[name=password]').value);
+            // 这是文件元素
+            var avatar =document.querySelector('input[name=avatar]');
+            formData.append('avatar',avatar.files[0]);//files[0] 表示第一个元素，这个是可以多选的
+            xhr.send(formData);//发送的请求头内容，
+            return false
+        })
+    }
+```
+
+# 上传图片的 后台代码
+```
+if (pathname == '/reg2') {
+    //创建解析器 用来解析请求体  把非file的input放在filede里 把文件类型的元素放在filede里
+  var form = new formidable.IncomingForm();
+  //  fields普通的input元素， files图片信息
+  form.parse(req, function (err, fields, files) {
+    fs.readFile(files.avatar.path, 'binary', function (err, data) {
+      var filename = './imgs/' + files.avatar.name;
+      fs.writeFile(filename, data, 'binary', function (err) {
+        res.writeHead(200, {
+          'Content-type': 'text/plain'
+        })
+        res.end(filename)
+      })
+    })
+}
+```
+
+#
