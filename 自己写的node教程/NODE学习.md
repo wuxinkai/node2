@@ -467,5 +467,157 @@ if (pathname == '/reg2') {
 }
 ```
 
-# 全局对象
+# 可读流 
+```
+var fs = require('fs');
+var rs = fs.createReadStream('./index.txt',{
+  start:3,
+  end:8,
+  highWaterMark:1 //读取多少字节  分两次传输
+});
+rs.setEncoding('utf8') //转译编码
+rs.on('data',function(data){
+  rs.pause(); //停止喂
+  setTimeout(function(){  //主要是控制生产数量和消费数量
+      console.log(data)
+      rs.resume() //继续喂
+  },1000)
+})
 
+rs.on('end',function(){ //数据得到完成
+    console.log('end')
+});
+
+rs.on('error',function(err){ //在流里判断错误 监听 error事件
+    console.error(err)
+});
+```
+# 可写流
+```
+var fs = require('fs');
+// ../box/write.txt 父目录必须存在，不存在就会报错
+var ws = fs.createWriteStream('./write.txt',{  //没有的话自己会创建
+    flags:'a', //表示不清空 原来的文件  向尾部追加
+    start:12, //四个汉字 所以是12，开始写入的位置
+});
+//写入
+ws.write("，写",'utf8',function(){
+    console.log(arguments)
+});
+ws.write("入",'utf8',function(){
+    console.log(arguments)
+});
+//写入关闭
+ws.end("内容",'utf8');
+```
+# 读写的pipe.js
+```
+var fs = require('fs')
+function copy(src,target){
+  var rs = fs.createReadStream(src);
+  var ws = fs.createWriteStream(target);
+  //对文件操作 写和读的时候
+  //要先打开文件 然后读写文件  关闭文件
+  // 将数据的 带留量 限制到一个可接受的水平 可以是不同的速度的来源和目标不会淹没 可用内容
+    rs.pipe(ws);
+   //rs.pipe(ws,{end:false}); //end为true时表示数据读取完毕后立刻将缓存区中的数据写入目标，并关闭文件
+}
+
+copy('./index.js','./write.txt');
+```
+#跨域资源共享
+设置响应头
+```
+  res.setHeader('Access-Control-Allow-Origin','http://localhost:8081')
+```
+
+# express
+## 安装 npm install express --save
+## 路由 根据请求路径来处理客户端发出的GET请求
+```
+app.get('/',function(req,res){
+    //send他可以自动判断数据类型 ，自动转换详细信息 自动设置Content—Type
+    res.send("你好 啊")
+});
+```
+## 中间件
+```
+//指定路径
+app.use('hello',function(req,res,next){}) 
+
+//所以的路径
+app.use(function(req,res,next){
+    res.mny=100;
+    next() //必须写next 否则下面无法执行
+})
+```
+
+
+接收参数 http://localhost:3000/hello?name=123
+```
+ app.get('/hello', function (req, res) {
+     console.log( req.host);//返回主机名不包括端口号
+   console.log( req.path); //返回url路径名，
+   console.log( req.query);//获取客户端的get请求查询字符串转成对象，
+   console.log( req.params); //是一个有路径参数组成的对象
+    //send他可以自动判断数据类型 ，自动转换详细信息 自动设置Content—Type
+    // res.send("get hello 啊")
+});
+```
+路径参数  http://localhost:3000/hello/23/100
+```
+app.get('/hello/:id/:age',function(req,res){
+    console.log(req.params.id)
+    console.log(req.params.age)
+    res.send("post hello 啊")
+});
+```
+## 模板：渲染模板引起
+```
+npm install ejs --save
+
+var express = require('express');
+var path = require('path');
+var app = express();
+
+//配置模板 属性
+app.set('view engine','ejs');
+
+//path.resolve 选获取绝对路径  然后拼拼上后的参数
+app.set('views',path.resolve('views'));
+
+//设置css样式
+app.use(express.static(path.resolve('public')));
+
+app.get('/', function (req, res) {
+    //渲染模板  渲染路径   数据源
+    res.render('index',{title:'首页',books:{
+        name:'wuxinkai'
+    }})
+});
+
+app.get('/reg', function (req, res) {
+  
+    res.render('index',{title:'注册',books:{
+        name:'wuxinkai'
+    }})
+});
+app.listen(8080);
+```
+## post请求
+安装接收参数的插件
+```
+var bodyParser = require('body-parser');
+
+//都是把请求体对象加到 req.body上 username=11&password=222->{username:11,password:222}
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
+
+app.post('/signup',function(req,res){
+    //获取参数
+    var user = req.body;
+
+   req.session.error = '此用户名已经被占用，请换个新的试试吧';
+   res.redirect('/signup');// 重定向 让客户端重新访问指定路径
+});
+```

@@ -13,22 +13,24 @@ var http = require('http');
 var fs = require('fs');
 //接收html页面发过来的请求
 
-var users =[];
-http.createServer(function(req,res){
+var users = [];
+http.createServer(function (req, res) {
+  var result = '';
+  if (req.url == '/') {
+    fs.createReadStream('./index.html').pipe(res) //pipe中导流
+  } else if (req.url == '/reg') {
+    req.on('data', function (data) {
+      result += data;
+      console.log(result)
+    })
+    req.on('end', function (data) {
+      //设置响应头 允许那个来源来访问我这个服务器
+      res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080')
+      users.push(JSON.parse(result));
+      res.end(JSON.stringify(users))
+    })
+  }
 
 
-    var result='';
-    req.on('data',function(data){
-        result+=data;
-        console.log(result)
-    })
-    req.on('end',function(data){
-        //设置响应头 允许那个来源来访问我这个服务器
-        res.setHeader('Access-Control-Allow-Origin','http://localhost:63342')
-        users.push(JSON.parse(result));
-        res.end(JSON.stringify(users))
-    })
 
 }).listen(8080);
-
-
