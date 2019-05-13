@@ -5,19 +5,30 @@
     <title>Title</title>
 </head>
 <body>
-
+    <button id="btn">点击事件</button>
+    <h1></h1>
 </body>
 </html>
 <script type="text/javascript">
-    //从后台获取到内容直接让show这个函数执行
+ 
+    //（4）从后台获取到内容直接让show这个函数执行
+    // 后台传过来的参数是  show({"baidu","tengxun","alibaba"}) 
     function show(data) {
-        document.body.innerHTML = data.name + '<br/>'+data.age
+        document.querySelector("h1").innerHTML = data.name + '<br/>'+data.age
 
     }
+
+
+    document.querySelector("#btn").onclick = function(){
     //（1）创建一个script标签
     var oScript = document.createElement('script');
 
-    oScript.src ='http://localhost:8080/books?dd=show'; //show(['node.js','java'])
+    //http://localhost:8080/books 是我们访问的后台地址
+    oScript.src ='http://localhost:8080/books?shuXingZhi=show'; //show(['node.js','java'])
+
+    //（2）插入内容后会自动向后台发起请求
     document.body.appendChild(oScript);
+    
+  }
 
 </script>
