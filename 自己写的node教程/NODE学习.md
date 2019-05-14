@@ -412,9 +412,11 @@ else if(url=='/clock'){
 - 通过 var formidable= require('formidable'); 接收内容 安装 npm i formidable
 
 ## 上传图片的 html 代码
-* （1）读取图片信息
-* （2）把图片返回给浏览器
-* （3）浏览器构建一个img元素 追加到body
+
+- （1）读取图片信息
+- （2）把图片返回给浏览器
+- （3）浏览器构建一个 img 元素 追加到 body
+
 ```
  window.onload=function(){
         //（1）注册监听
@@ -449,6 +451,7 @@ else if(url=='/clock'){
 ```
 
 # 上传图片的 后台代码
+
 ```
 if (pathname == '/reg2') {
     //创建解析器 用来解析请求体  把非file的input放在filede里 把文件类型的元素放在filede里
@@ -467,7 +470,8 @@ if (pathname == '/reg2') {
 }
 ```
 
-# 可读流 
+# 可读流
+
 ```
 var fs = require('fs');
 var rs = fs.createReadStream('./index.txt',{
@@ -492,7 +496,9 @@ rs.on('error',function(err){ //在流里判断错误 监听 error事件
     console.error(err)
 });
 ```
+
 # 可写流
+
 ```
 var fs = require('fs');
 // ../box/write.txt 父目录必须存在，不存在就会报错
@@ -510,7 +516,9 @@ ws.write("入",'utf8',function(){
 //写入关闭
 ws.end("内容",'utf8');
 ```
-# 读写的pipe.js
+
+# 读写的 pipe.js
+
 ```
 var fs = require('fs')
 function copy(src,target){
@@ -525,25 +533,32 @@ function copy(src,target){
 
 copy('./index.js','./write.txt');
 ```
+
 #跨域资源共享
 设置响应头
+
 ```
   res.setHeader('Access-Control-Allow-Origin','http://localhost:8081')
 ```
 
 # express
+
 ## 安装 npm install express --save
-## 路由 根据请求路径来处理客户端发出的GET请求
+
+## 路由 根据请求路径来处理客户端发出的 GET 请求
+
 ```
 app.get('/',function(req,res){
     //send他可以自动判断数据类型 ，自动转换详细信息 自动设置Content—Type
     res.send("你好 啊")
 });
 ```
+
 ## 中间件
+
 ```
 //指定路径
-app.use('hello',function(req,res,next){}) 
+app.use('hello',function(req,res,next){})
 
 //所以的路径
 app.use(function(req,res,next){
@@ -552,8 +567,8 @@ app.use(function(req,res,next){
 })
 ```
 
-
 接收参数 http://localhost:3000/hello?name=123
+
 ```
  app.get('/hello', function (req, res) {
      console.log( req.host);//返回主机名不包括端口号
@@ -564,7 +579,9 @@ app.use(function(req,res,next){
     // res.send("get hello 啊")
 });
 ```
-路径参数  http://localhost:3000/hello/23/100
+
+路径参数 http://localhost:3000/hello/23/100
+
 ```
 app.get('/hello/:id/:age',function(req,res){
     console.log(req.params.id)
@@ -572,7 +589,9 @@ app.get('/hello/:id/:age',function(req,res){
     res.send("post hello 啊")
 });
 ```
+
 ## 模板：渲染模板引起
+
 ```
 npm install ejs --save
 
@@ -597,15 +616,18 @@ app.get('/', function (req, res) {
 });
 
 app.get('/reg', function (req, res) {
-  
+
     res.render('index',{title:'注册',books:{
         name:'wuxinkai'
     }})
 });
 app.listen(8080);
 ```
-## post请求
+
+## post 请求
+
 安装接收参数的插件
+
 ```
 var bodyParser = require('body-parser');
 
@@ -620,4 +642,35 @@ app.post('/signup',function(req,res){
    req.session.error = '此用户名已经被占用，请换个新的试试吧';
    res.redirect('/signup');// 重定向 让客户端重新访问指定路径
 });
+```
+
+# cookie
+
+下载
+
+```
+ cnpm install cookie-parser
+```
+
+后台设置 http://localhost:8080/write
+
+```
+if(req.url=='/write'){
+    res.setHeader('Set-Cookie','name=wuxinkai');
+    res.end('ok ')
+}
+```
+
+获取 cookie http://localhost:8080/read\
+```
+if(req.url=='/read'){
+  console.log(req.headers);
+  //获取cookie
+  res.end(req.headers.cookie);
+}
+```
+# session
+安装
+```
+cnpm install express-session
 ```
