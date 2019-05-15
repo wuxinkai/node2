@@ -674,3 +674,15 @@ if(req.url=='/read'){
 ```
 cnpm install express-session
 ```
+
+# mongdb数据库
+
+## 启动数据库
+```
+mongod
+```
+![my-logo.png](./images/3.png "my-logo")
+##  连接数据库
+```
+
+```

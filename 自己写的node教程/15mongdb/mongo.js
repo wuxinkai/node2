@@ -1,7 +1,7 @@
 //加载mongose模块
 var  mongoose= require('mongoose'); //第三方模块
 //链接数据库      协议       域名      数据库名字
-mongoose.connect('mongodb://127.0.0.1/2017node'); //:27017端口号可以不写    //2017node数据库的名字有就添加  没有就创建
+mongoose.connect('mongodb://127.0.0.1/2019node'); //:27017端口号可以不写    //201node数据库的名字有就添加  没有就创建
 
 //先创建集合骨架模型 规定一个集合的文档的字段名称和类型
 //规定存储的时候字段的名称
