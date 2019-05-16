@@ -10,9 +10,12 @@ var users = require('./routes/users');
 
 var app = express();
 
-// view engine setup
+//设置成html模板
 app.set('views', path.join(__dirname, 'views'));
+
 app.set('view engine', 'ejs');
+//对于html格式的文件 渲染的时候， 委托ejs渲染
+app.engine('html',require('ejs').renderFile)
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

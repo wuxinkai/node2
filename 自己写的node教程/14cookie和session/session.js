@@ -5,6 +5,7 @@ var express = require('express');
 
 var session = require('express-session');
 var app = express();
+
 app.use(session({
   secret: 'wuxinkai', //建议使用字符串
   cookie: { maxAge: 60 * 1000 * 30 }, //过期时间（毫秒）

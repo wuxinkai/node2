@@ -1,0 +1,11 @@
+<h1>{{title}}</h1>
+<p>Welcome to {{title}}</p>
+
+{{!-- 引入头部模板 和底部公共部分 --}}
+<ul class="list">
+  {{#each author}}
+  <li>{{id}}{{age}}{{name}}</li>
+  {{/each}}
+</ul>
+
+

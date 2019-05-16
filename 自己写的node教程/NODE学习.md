@@ -677,12 +677,36 @@ cnpm install express-session
 
 # mongdb数据库
 
-## 启动数据库
+## 启动数据库 在cmd启动
 ```
 mongod
 ```
 ![my-logo.png](./images/3.png "my-logo")
 ##  连接数据库
 ```
+const mongoose = require('mongoose')//第三方模块
+ mongoose.connect("mongodb://127.0.0.1/sjkName", {useNewUrlParser:true}); 
+//数据库连接状态
+var db = mongoose.connection
+db.on('error', console.error.bind(console, '数据库连接失败：'))
 
+db.once('open', () => console.log('数据库连接成功'))
 ```
+# 创建项目
+## 全局安装
+```
+npm install -g express-generator
+
+//在 E盘地下创建项目
+express -e xiangmu1 
+
+// 下载 依赖包
+npm install
+
+//启动项目
+npm start
+
+在路径输出 
+http://localhost:3000/
+```
+## 

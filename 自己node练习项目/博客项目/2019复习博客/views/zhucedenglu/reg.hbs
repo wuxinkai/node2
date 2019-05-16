@@ -1,0 +1,29 @@
+<h1>{{title}}</h1>
+
+
+<div class="form-grid" >
+  <form class="form-signin f1" method="post" action="/users/reg">
+  <h1 class="h3 mb-3 font-weight-normal">注册页面</h1>
+  <label for="text" class="sr-only">注册页面</label>
+  <input type="text" id="text" class="form-control" placeholder="注册账号" name="username">
+
+  <label for="inputPassword" class="sr-only">密码</label>
+  <input type="password" id="inputPassword" class="form-control" placeholder="注册密码" name="password">
+
+  <label for="code" class="sr-only">验证码</label>
+  <input type="text" id="code" class="form-control" placeholder="验证码" name="code">
+
+  <button class="btn btn-lg btn-primary btn-block" type="submit">提交注册</button>
+
+  {{!-- 
+  前台
+   method="post"  提交方式
+   action="users/reg"  提交路径
+   name="password" 通过name传递数据 必须每个input都需要name
+  后台
+
+
+  数据库
+   --}}
+</form>
+</div>

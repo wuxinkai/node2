@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>{{title}}</title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel='stylesheet' href='/stylesheets/bootstrap.css' />
+</head>
+
+<body>
+  {{#if error}}
+  <div class="alert alert-secondary" role="alert">
+    {{error}}
+  </div>
+  {{/if}}
+  {{#if success}}
+  <div class="alert alert-primary" role="alert">
+    {{success}}
+  </div>
+  {{/if}}
+
+
+  <nav class="navbar navbar-default dm-header-wrap">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">
+          <img alt="Brand" src="../images/1.png">
+        </a>
+      </div>
+      <ul class="nav">
+        {{#if userIf}}
+        <li class="nav-item">
+          <a class="nav-link" href="/articles/add">发表文章</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="/users/logout">退出</a>
+        </li>
+        {{else}}
+        <li class="nav-item">
+          <a class="nav-link active" href="/users/login">登录</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/users/reg">注册</a>
+        </li>
+        {{/if}}
+      </ul>
+    </div>
+  </nav>
+  {{{body}}}
+
+  <div id="footer">
+
+  </div>
+</body>
+
+</html>
