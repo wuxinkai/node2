@@ -170,6 +170,45 @@ app.use(function (req, res, next) {
   {{/if}}
 ```
 # 权限控制
+设置路径 2019复习博客\mibble\index.js
+```
+//要求路由登录后才能访问
+exports.checkLogin = function (req, res, next) { 
+  if (req.session.user) {
+    next()
+  } else { 
+    req.flash('error','没有登录')
+    res.redirect('/users/login')
+  }
+}
+
+//要求路由登录后才能访问
+exports.checkNotLogin = function (req, res, next) { 
+  if (req.session.user) {
+    req.flash('error','已经登录')
+    res.redirect('/users/login')
+  } else { 
+    next()
+   
+  }
+}
+```
+引入应用
+```
+var validata = require('../mibble')
+
+router.get('/reg',validata.checkNotLogin, function (req, res, next) {
+  res.render('zhucedenglu/reg', {title:'注册'})
+
+});
+
+router.get('/logout',validata.checkLogin, function(req, res, next) {
+  req.session.user = null; //
+  req.flash("success","退出成功")
+  res.redirect('/')
+});
+```
+首页显示文字列表
 ```
 
 ```

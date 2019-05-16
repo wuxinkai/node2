@@ -62,3 +62,6 @@ a {
 
 .f1{background: #f1f1f1}
 .f2{background: #f3e7c6}
+
+.media-object{width: 100px;height: 100px;;border: 1px solid #ccc}
+.media-body{margin-left: 15px;}
