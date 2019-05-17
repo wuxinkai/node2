@@ -89,6 +89,10 @@ var PersonModel = mongoose.model("Person", personSchema); //Person 集合的名�
 // });
 // //分页 每页三条查询两页  find(查询条件，指定要返回的属性，回调函数) 查询条件
 // PersonModel.find({},{id:0,name:1},{limit:3,skip:3,sort:{age:1,name:1}},function(err,doc){
+
+// limit 限定返回多少条
+// skip 跳过多少个
+// sort 排序  1 代表升序  -1代表降序
 PersonModel.find({}, null, { limit: 3, skip: 3, sort: { age: 1, name: 1 } },function(err,doc){ //{_id:0 代表不获取_id,id不指定就返回，1代表获取内容
     console.log(doc)
 })

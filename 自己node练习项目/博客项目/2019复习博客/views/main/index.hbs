@@ -1,25 +1,20 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
 
-{{!-- 引入头部模板 和底部公共部分 --}}
-<ul class="list">
-  {{#each author}}
-  <li>{{id}}{{age}}{{name}}</li>
-  {{/each}}
-</ul>
-
+<div class="content-grid">
+  {{#each articles}}
 <div class="media">
   <div class="media-left">
     <a href="#">
-      <img class="media-object" src="./images/1.png" alt="...">
+      <img class="media-object" src="{{user.avatar}}" alt="...">
     </a>
   </div>
   <div class="media-body">
-    <h4 class="media-heading">css3 box-shadow阴影(外阴影与外发光)讲解</h4>
-    <p> 已经推送（push）过的文件，想在以后的提交时忽略此文件，即使本地已经修改过，而且不删除git远程库中相应文件
-
-执行命令。后面的 Xml/config.xml 是要忽略的文件的路径。适用于：
-
-git远程库上有一个标准配置文件，然后每个人根据自己的具体情况，修改一份链接信息自用，而且不会将该配置文件提交到库</p>
+    <h4 class="media-heading"><a href="./articles/detail/{{_id}}">{{title}}</a></h4>
+    <p class="content-text">{{content}}</p>
+    <div>
+      <span>{{user.username}}</span>
+      <span>{{createAt}}</span>
+    </div>
   </div>
+</div>
+{{/each}}
 </div>

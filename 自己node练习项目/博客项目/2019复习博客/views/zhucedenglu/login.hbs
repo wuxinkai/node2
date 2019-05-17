@@ -1,13 +1,13 @@
 <h1>{{title}}</h1>
 
 <div class="form-grid">
-  <form class="form-signin f2">
+  <form class="form-signin f2"   method="post"  action="/users/login">
   <h1 class="h3 mb-3 font-weight-normal">登录页面</h1>
   <label for="inputEmail" class="sr-only">登录页面</label>
-  <input type="email" id="inputEmail" class="form-control" placeholder="登录账号" required="" autofocus="">
+   <input type="text" id="text" class="form-control" placeholder="登录页面" name="username">
 
   <label for="inputPassword" class="sr-only">登录密码</label>
-  <input type="password" id="inputPassword" class="form-control" placeholder="登录密码" required="">
+  <input type="password" id="inputPassword" class="form-control" placeholder="登录密码" name="password">
 
   <button class="btn btn-lg btn-primary btn-block" type="submit">提交登录</button>
 </form>

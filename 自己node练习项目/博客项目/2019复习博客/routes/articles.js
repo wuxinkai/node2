@@ -18,12 +18,44 @@ router.post('/add', function (req, res, next) {
   articlesMongoose.create(article, function (err,data) { 
     if (err) {
       req.flash('error', "插入错误")
-       res.redirect('back')
+      res.redirect('back')
     } else { 
       req.flash('success', "发表成功")
-       res.redirect('/')
+      res.redirect('/')
     }
   })
-  console.log(article);
 });
+
+//查看详情
+
+router.get('/detail/:_id', function (req, res, next) {
+  var ID = req.params._id
+  articlesMongoose.findById(ID, function (err,data) { 
+    if (err) {
+      req.flash('error', "插入错误")
+      res.redirect('back')
+    } else { 
+      req.flash('success', "发表成功")
+      res.render('articles/detail', {detailText:data})
+    }
+  })
+
+});
+
+// 删除 
+router.get('/delete/:_id', function (req, res) {
+  articlesMongoose.remove({_id:req.params._id}, function (err,data) { 
+    if (err) {
+      req.flash('error', "删除错误")
+      res.redirect('back')
+    } else { 
+      req.flash('success', "删除成功")
+      res.redirect('/')
+    }
+  })
+});
+
+// 修改
+
+
 module.exports = router;

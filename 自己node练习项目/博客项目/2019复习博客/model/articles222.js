@@ -4,7 +4,8 @@ const mongoose = require('mongoose')//第三方模块
 var articlesSchema = new mongoose.Schema({
   title:String,
   content: String,
-  user: {type:mongoose.Schema.Types.ObjectId,ref:'user'}, //引用的是user
+  // user: {type:mongoose.Schema.Types.ObjectId,ref:'ZhuCeDengLu'}, //引用的是ZhuCeDengLu
+  user: {type: mongoose.Schema.Types.ObjectId, ref:'ZhuCeDengLu'}, //引用的是ZhuCeDengLu
   createAt: {type:Date,default:Date.now} //发表时间
 }, { collection: 'articles' }); //指定集合名字，这样集合就不会自己创建名字
 var articlesModel = mongoose.model("articlesModel", articlesSchema); //articles 集合的名字
